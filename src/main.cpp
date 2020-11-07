@@ -13,13 +13,14 @@ class OrderBookEntry
                     std::string _timestamp,
                     std::string _product,
                     OrderBookType _orderType)
+
+    :   price(_price), 
+        amount(_amount),
+        timestamp(_timestamp),
+        product(_product),
+        orderType(_orderType)
+    
     {
-        //All the data coming from the constructor parameters are passed to the variables within function.
-        price = _price;
-        amount = _amount;
-        timestamp = _timestamp;
-        product = _product;
-        orderType = _orderType;
     
     }
 
