@@ -158,14 +158,31 @@ int main()
         int userOption = getUserOption();
         processUserOption(userOption);
     }*/
+    
+    std::vector<OrderBookEntry> orders;
+    orders.push_back(OrderBookEntry {10000,
+                                     0.002,
+                                     "2020/03/17 17:01:24.884492",
+                                     "btc/usdt",
+                                     OrderBookType::bid});
 
 
-    OrderBookEntry order1{10000,
-                          0.002,
-                          "2020/03/17 17:01:24.884492",
-                          "btc/usdt",
-                           OrderBookType::bid};
+    orders.push_back(OrderBookEntry {2000,
+                                     0.005,
+                                     "2020/03/17 17:01:24.884492",
+                                     "btc/usdt",
+                                     OrderBookType::bid});
+    //Instead of declaring the variable we can call the construction within push back
 
+
+    // OrderBookEntry order1{10000,
+    //                       0.002,
+    //                       "2020/03/17 17:01:24.884492",
+    //                       "btc/usdt",
+    //                        OrderBookType::bid};
+
+    
+    
     //{} brackets are explicit to call the constructor
     
     //Below Code is before declaring the construction function in Class 
@@ -177,8 +194,33 @@ int main()
     order1.product = "btc/usdt";
     order1.orderType = OrderBookType::bid;*/
 
-    std::cout << "The price is " << order1.amount << std::endl;
+    std::cout << "The price is " << orders[1].price << std::endl;
 
+    //****Iterative Style of printing *****
+
+    //Method 1 :It is making the copy thing to order but adding & will make it more efficient
+    for (OrderBookEntry& order : orders)
+    {
+        std::cout << "The price is " << order.price << std::endl;
+
+    }    
+
+    //Method 2 - ++i is more efficient it copy and increment at same time.
+    for (unsigned int i =0; i < orders.size(); ++i)
+
+    {
+        std::cout << "The price is " << orders[i].price << std::endl;
+ 
+    }
+
+    
+    //Method 3 - orders.at(i) object style syntax
+     for (unsigned int i =0; i < orders.size(); ++i)
+
+    {
+        std::cout << "The price is " << orders.at(i).price << std::endl;
+ 
+    }
     //return 0;
 }
 
