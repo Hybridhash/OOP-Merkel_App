@@ -1,131 +1,19 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-enum class OrderBookType { bid, ask };
-
-class OrderBookEntry
-{
-    public:
-
-     OrderBookEntry(double _price,
-                    double _amount,
-                    std::string _timestamp,
-                    std::string _product,
-                    OrderBookType _orderType)
-
-    :   price(_price), 
-        amount(_amount),
-        timestamp(_timestamp),
-        product(_product),
-        orderType(_orderType)
-    
-    {
-    
-    }
-
-    //It is mendatory to declare the same variables in class which are declared as parameters in constructpr function
-    double price; 
-    double amount;
-    std::string timestamp;
-    std::string product;
-    OrderBookType orderType;
-
-};
-void printMenu()
-{
-    // 1 print help
-    std::cout << "1: Print help " << std::endl;
-    // 2 print exchange stats
-    std::cout << "2: Print exchange stats" << std::endl;
-    // 3 make an offer
-    std::cout << "3: Make an offer " << std::endl;
-    // 4 make a bid 
-    std::cout << "4: Make a bid " << std::endl;
-    // 5 print wallet
-    std::cout << "5: Print wallet " << std::endl;
-    // 6 continue   
-    std::cout << "6: Continue " << std::endl;
-
-    std::cout << "============== " << std::endl;
-}
-
-void printHelp()
-{
-    std::cout << "Help - your aim is to make money. Analyse the market and make bids and offers. " << std::endl;
-}
-
-void  printMarketStats()
-{
-    std::cout << "Market looks good. " << std::endl;
-}
-
-void enterOffer()
-{
-    std::cout << "Mark and offer - enter the amount " << std::endl;
-}
-
-void enterBid()
-{
-    std::cout << "Make a bid - enter the amount" << std::endl;
-}
-
-void printWallet()
-{
-    std::cout << "Your wallet is empty. " << std::endl;
-}
-        
-void gotoNextTimeframe()
-{
-    std::cout << "Going to next time frame. " << std::endl;
-}
- 
-int getUserOption()
-{
-    int userOption;
-
-    std::cout << "Type in 1-6" << std::endl;
-    std::cin >> userOption;
-    std::cout << "You chose: " << userOption << std::endl;
-    return userOption;
-}
-
-void processUserOption(int userOption)
-{
-    if (userOption == 0) // bad input
-    {
-        std::cout << "Invalid choice. Choose 1-6" << std::endl;
-    }
-    if (userOption == 1) // bad input
-    {
-        printHelp();
-    }
-    if (userOption == 2) // bad input
-    {
-        printMarketStats();
-    }
-    if (userOption == 3) // bad input
-    {
-        enterOffer();
-    }
-    if (userOption == 4) // bad input
-    {
-        enterBid();
-    }
-    if (userOption == 5) // bad input
-    {
-        printWallet();
-    }
-    if (userOption == 6) // bad input
-    {
-        gotoNextTimeframe();
-    }       
-}
+#include "OrderBookEntry.h"
+#include "MerkelMain.h" cd
 
 int main()
 {   
-    
-    //Double is used as it is financial data and it might reduce quality over time like picture
+    MerkelMain app{};
+
+    app.printHelp();    
+   
+}
+
+
+//Double is used as it is financial data and it might reduce quality over time like picture
     //double price = 5405.41766912;
     //double amount = 0.69895055;
     
@@ -149,29 +37,26 @@ int main()
 
     std::cout << "prices " << prices[0] << std::endl;*/
 
-
-
-
     /*while (true)
     {
         printMenu();
         int userOption = getUserOption();
         processUserOption(userOption);
     }*/
-    
-    std::vector<OrderBookEntry> orders;
-    orders.push_back(OrderBookEntry {10000,
-                                     0.002,
-                                     "2020/03/17 17:01:24.884492",
-                                     "btc/usdt",
-                                     OrderBookType::bid});
+
+// std::vector<OrderBookEntry> orders;
+   // orders.push_back(OrderBookEntry {10000,
+   //                                  0.002,
+   //                                  "2020/03/17 17:01:24.884492",
+   //                                  "btc/usdt",
+   //                                  OrderBookType::bid});
 
 
-    orders.push_back(OrderBookEntry {2000,
-                                     0.005,
-                                     "2020/03/17 17:01:24.884492",
-                                     "btc/usdt",
-                                     OrderBookType::bid});
+    //orders.push_back(OrderBookEntry {2000,
+   //                                  0.005,
+   //                                  "2020/03/17 17:01:24.884492",
+   //                                  "btc/usdt",
+   //                                  OrderBookType::bid});
     //Instead of declaring the variable we can call the construction within push back
 
 
@@ -194,33 +79,26 @@ int main()
     order1.product = "btc/usdt";
     order1.orderType = OrderBookType::bid;*/
 
-    std::cout << "The price is " << orders[1].price << std::endl;
+    //std::cout << "The price is " << orders[1].price << std::endl;
 
     //****Iterative Style of printing *****
 
     //Method 1 :It is making the copy thing to order but adding & will make it more efficient
-    for (OrderBookEntry& order : orders)
-    {
-        std::cout << "The price is " << order.price << std::endl;
-
-    }    
+   
+    // for (OrderBookEntry& order : orders)
+   // {
+   //     std::cout << "The price is " << order.price << std::endl; 
+   // }    
 
     //Method 2 - ++i is more efficient it copy and increment at same time.
-    for (unsigned int i =0; i < orders.size(); ++i)
-
-    {
-        std::cout << "The price is " << orders[i].price << std::endl;
- 
-    }
-
+   // for (unsigned int i =0; i < orders.size(); ++i)
+   // {
+   //     std::cout << "The price is " << orders[i].price << std::endl;
+   // }
     
     //Method 3 - orders.at(i) object style syntax
-     for (unsigned int i =0; i < orders.size(); ++i)
-
-    {
-        std::cout << "The price is " << orders.at(i).price << std::endl;
- 
-    }
+    // for (unsigned int i =0; i < orders.size(); ++i)
+    //{
+    //    std::cout << "The price is " << orders.at(i).price << std::endl;
+    //}
     //return 0;
-}
-
