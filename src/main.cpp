@@ -2,13 +2,13 @@
 #include <string>
 #include <vector>
 #include "OrderBookEntry.h"
-#include "MerkelMain.h" cd
+#include "MerkelMain.h"
 
 int main()
 {   
     MerkelMain app{};
 
-    app.printHelp();    
+    app.init();    
    
 }
 

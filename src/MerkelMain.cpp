@@ -1,5 +1,7 @@
 #include <iostream>
 #include "MerkelMain.h"
+#include <vector>
+#include "OrderBookEntry.h"
 
 
 //***Extract from Video****
@@ -13,6 +15,36 @@ MerkelMain::MerkelMain()
 
 void MerkelMain::init()
 {
+    /*we've got a constructor and an init function, logic behind that is that the constructor is for creating an instance of
+    the object and make sure it's ready to be used, and the init is actually to start the object running.*/
+
+    int input;
+    while(true)
+    {
+        printMenu();
+        input = getUserOption();
+        processUserOption(input);
+    }
+
+}
+
+void MerkelMain::loadOrderBook()
+{
+   orders.push_back(OrderBookEntry {10000,
+                                     0.002,
+                                     "2020/03/17 17:01:24.884492",
+                                     "btc/usdt",
+                                     OrderBookType::bid});
+
+
+   orders.push_back(OrderBookEntry {2000,
+                                     0.005,
+                                     "2020/03/17 17:01:24.884492",
+                                     "btc/usdt",
+                                     OrderBookType::bid});
+   
+   //Instead of declaring the variable we can call the construction within push back
+
 
 }
 
@@ -42,7 +74,7 @@ void MerkelMain::printHelp()
 
 void  MerkelMain::printMarketStats()
 {
-    std::cout << "Market looks good. " << std::endl;
+    std::cout << "OrderBook contains :  " << orders.size() << " entries"<< std::endl;
 }
 
 void MerkelMain::enterOffer()
