@@ -4,10 +4,10 @@
 
 //Class implementation and specification into header file
 
-enum class OrderBookType { bid, ask };
+enum class OrderBookType {bid, ask, unknown};
 
-class OrderBookEntry
-{
+    class OrderBookEntry
+    {
     public:
 
      OrderBookEntry(double _price,
@@ -15,6 +15,11 @@ class OrderBookEntry
                     std::string _timestamp,
                     std::string _product,
                     OrderBookType _orderType);
+    
+        //Function to convert the string to order book type. More practically to do here as statis (don't depend any of the data below)
+        
+        static OrderBookType stringToOrderBookType (std::string s);
+
     //It is mendatory to declare the same variables in class which are declared as parameters in constructpr function
     double price; 
     double amount;

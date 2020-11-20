@@ -18,4 +18,22 @@ OrderBookEntry::OrderBookEntry(double _price,
 
 {
 
-}    
+}
+//Name spacing with come before the function and OrderBookType mentioned in the begining is to get the type based on enum class
+OrderBookType OrderBookEntry::stringToOrderBookType (std::string s)
+
+{
+    if (s == "ask")
+    {
+        return OrderBookType::ask;
+    }
+    if (s == "bid")
+
+    {
+        return OrderBookType::bid;
+    }
+
+    //There is no if provided as it gives some warning of reaaching end of class
+    return OrderBookType::unknown;
+    
+}

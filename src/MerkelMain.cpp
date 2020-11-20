@@ -2,6 +2,7 @@
 #include "MerkelMain.h"
 #include <vector>
 #include "OrderBookEntry.h"
+#include "CSVReader.h"
 
 
 //***Extract from Video****
@@ -18,6 +19,7 @@ void MerkelMain::init()
     /*we've got a constructor and an init function, logic behind that is that the constructor is for creating an instance of
     the object and make sure it's ready to be used, and the init is actually to start the object running.*/
 
+    loadOrderBook();
     int input;
     while(true)
     {
@@ -30,20 +32,8 @@ void MerkelMain::init()
 
 void MerkelMain::loadOrderBook()
 {
-   orders.push_back(OrderBookEntry {10000,
-                                     0.002,
-                                     "2020/03/17 17:01:24.884492",
-                                     "btc/usdt",
-                                     OrderBookType::bid});
 
-
-   orders.push_back(OrderBookEntry {2000,
-                                     0.005,
-                                     "2020/03/17 17:01:24.884492",
-                                     "btc/usdt",
-                                     OrderBookType::bid});
-   
-   //Instead of declaring the variable we can call the construction within push back
+    orders = CSVReader::readCSV("20200317.csv");
 
 
 }
@@ -75,6 +65,24 @@ void MerkelMain::printHelp()
 void  MerkelMain::printMarketStats()
 {
     std::cout << "OrderBook contains :  " << orders.size() << " entries"<< std::endl;
+
+    unsigned int bids = 0;
+    unsigned int asks = 0;
+    //Reference is provided to avoid copying the items in order book and iterate over the items in order book
+    for (OrderBookEntry& e : orders)
+    {
+        if (e.orderType == OrderBookType::ask)
+        {
+            asks++;
+        }
+        if (e.orderType == OrderBookType::bid)
+        {
+            bids++;
+        }
+    }
+
+    std::cout << "OrderBook ask :  " << asks << " OrderBook bids : " << bids << " entries"<< std::endl;
+
 }
 
 void MerkelMain::enterOffer()
@@ -136,5 +144,5 @@ void MerkelMain::processUserOption(int userOption)
     if (userOption == 6) // bad input
     {
         gotoNextTimeframe();
-    }       
-}
+    }        
+} 
