@@ -3,7 +3,7 @@
 #include <vector>
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
-
+#include "OrderBook.h"
 
 //***Extract from Video****
 /* normally the idea that you call a constructor and then that starts the whole program
@@ -19,22 +19,16 @@ void MerkelMain::init()
     /*we've got a constructor and an init function, logic behind that is that the constructor is for creating an instance of
     the object and make sure it's ready to be used, and the init is actually to start the object running.*/
 
-    loadOrderBook();
     int input;
+
+    currentTime = OrderBook.getEarliestTime();
+
     while(true)
     {
         printMenu();
         input = getUserOption();
         processUserOption(input);
     }
-
-}
-
-void MerkelMain::loadOrderBook()
-{
-
-    orders = CSVReader::readCSV("20200317.csv");
-
 
 }
 
@@ -55,6 +49,9 @@ void MerkelMain::printMenu()
     std::cout << "6: Continue " << std::endl;
 
     std::cout << "============== " << std::endl;
+
+    std::cout << "Current time is:  " << currentTime << std::endl;
+
 }
 
 void MerkelMain::printHelp()
@@ -64,24 +61,40 @@ void MerkelMain::printHelp()
 
 void  MerkelMain::printMarketStats()
 {
-    std::cout << "OrderBook contains :  " << orders.size() << " entries"<< std::endl;
+    //don't want to change and copy therefore const& is used
+    for (std::string const& p : OrderBook.getKnownProducts())
 
-    unsigned int bids = 0;
-    unsigned int asks = 0;
-    //Reference is provided to avoid copying the items in order book and iterate over the items in order book
-    for (OrderBookEntry& e : orders)
     {
-        if (e.orderType == OrderBookType::ask)
-        {
-            asks++;
-        }
-        if (e.orderType == OrderBookType::bid)
-        {
-            bids++;
-        }
-    }
+        std::cout << "Products: " << p << std::endl;
+        std::vector <OrderBookEntry> entries = OrderBook.getOrders( OrderBookType::ask, 
+                                                                    p,
+                                                                    currentTime);
 
-    std::cout << "OrderBook ask :  " << asks << " OrderBook bids : " << bids << " entries"<< std::endl;
+        std::cout << "Asks Seen: " << entries.size() << std::endl; 
+        
+        std::cout << "Max ask: " << OrderBook::getHighPrice(entries) << std::endl;
+        std::cout << "Min ask: " << OrderBook::getLowPrice(entries) << std::endl; 
+ 
+    }
+    
+    // std::cout << "OrderBook contains :  " << orders.size() << " entries"<< std::endl;
+
+    // unsigned int bids = 0;
+    // unsigned int asks = 0;
+    // //Reference is provided to avoid copying the items in order book and iterate over the items in order book
+    // for (OrderBookEntry& e : orders)
+    // {
+    //     if (e.orderType == OrderBookType::ask)
+    //     {
+    //         asks++;
+    //     }
+    //     if (e.orderType == OrderBookType::bid)
+    //     {
+    //         bids++;
+    //     }
+    // }
+
+    // std::cout << "OrderBook ask :  " << asks << " OrderBook bids : " << bids << " entries"<< std::endl;
 
 }
 
@@ -103,6 +116,7 @@ void MerkelMain::printWallet()
 void MerkelMain::gotoNextTimeframe()
 {
     std::cout << "Going to next time frame. " << std::endl;
+    currentTime = OrderBook.getNextTime(currentTime);
 }
  
 int MerkelMain::getUserOption()

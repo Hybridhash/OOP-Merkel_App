@@ -2,9 +2,10 @@
 
 #include <vector>
 #include "OrderBookEntry.h"
+#include "OrderBook.h"
 
-class MerkelMain
-{
+    class MerkelMain
+    {
     public:
 
     //These are specifications, implementation will be in CPP file.
@@ -12,8 +13,7 @@ class MerkelMain
     /**Call this to start the sim*/
     void init();
 
-    private:
-    void loadOrderBook();   
+    private:  
     void printMenu();
     void printHelp();
     void printMarketStats();
@@ -24,8 +24,12 @@ class MerkelMain
     int getUserOption();
     void processUserOption(int userOption);
 
+    /**T give the simulation current time*/
+    std::string currentTime;
+
     //Making the vector accessible for all the function in private but not accessible from public main app. Object Scope Variable
-    std::vector<OrderBookEntry> orders;
+    OrderBook OrderBook{"20200317.csv"};
+    //std::vector<OrderBookEntry> orders;
 };
 
 
