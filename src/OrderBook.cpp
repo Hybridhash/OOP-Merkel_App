@@ -1,6 +1,7 @@
 #include "OrderBook.h"
 #include "CSVReader.h"
 #include "map"
+#include <algorithm>
 
 /**Construct, reading a csv data file*/
 OrderBook::OrderBook(std::string fileName)
@@ -111,4 +112,15 @@ std::string OrderBook::getNextTime (std::string timestamp)
     }
 
     return next_timestamp;
+}
+
+void OrderBook::insertOrder(OrderBookEntry& order)
+
+{
+    orders.push_back(order);
+
+    //C++ has standard function for sort but need the comparing function
+    //Since, we are comparing the orderbookentries so function will go to orderbookentries class. 
+    //Parse in the name of the function nothing else.
+    std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimesstamp);
 }

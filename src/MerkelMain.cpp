@@ -4,6 +4,8 @@
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
 #include "OrderBook.h"
+#include <stdexcept>
+#include <limits>
 
 //***Extract from Video****
 /* normally the idea that you call a constructor and then that starts the whole program
@@ -98,9 +100,37 @@ void  MerkelMain::printMarketStats()
 
 }
 
-void MerkelMain::enterOffer()
+void MerkelMain::enterAsk()
 {
-    std::cout << "Mark and offer - enter the amount " << std::endl;
+    std::cout << "Mark and ask - enter the amount: Product,Price, Amount, eg: ETH/BTC,200,0.5 " << std::endl;
+    std::string input;
+    
+    std::getline(std::cin, input); 
+
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 3)
+    {
+      std::cout <<"Bad input by user " << input << std::endl;      
+    }
+    else
+    {   
+        try{
+        OrderBookEntry obe = CSVReader::stringToOBE(
+            tokens[1],
+            tokens[2],
+            currentTime,
+            tokens[0],
+            OrderBookType::ask);
+        //Inserting order in the orderbook.
+        OrderBook.insertOrder(obe);
+        }catch(const std::exception& e)
+        {
+            std::cout << "MerkelMain::enterAsk Bad Input: " << std::endl;
+        }
+    }
+    
+
+    std::cout << "You Typed: " << input << std::endl;
 }
 
 void MerkelMain::enterBid()
@@ -121,10 +151,17 @@ void MerkelMain::gotoNextTimeframe()
  
 int MerkelMain::getUserOption()
 {
-    int userOption;
-
+    int userOption = 0;
+    std::string line;
     std::cout << "Type in 1-6" << std::endl;
-    std::cin >> userOption;
+    std::getline (std::cin, line);
+    try{
+        //to get the error getline is provided with cin and that line is converted to integer.
+        userOption = std::stoi(line);
+    }catch(const std::exception& e)
+    {
+        //
+    }
     std::cout << "You chose: " << userOption << std::endl;
     return userOption;
 }
@@ -145,7 +182,7 @@ void MerkelMain::processUserOption(int userOption)
     }
     if (userOption == 3) // bad input
     {
-        enterOffer();
+        enterAsk();
     }
     if (userOption == 4) // bad input
     {

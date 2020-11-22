@@ -26,6 +26,9 @@ class OrderBook
          * if there is no nect timestamp, wraps around to the start*/
         std::string getNextTime (std::string timestamp);
     
+        /**Function to add the entry in the orderbook by generating the object and parse*/
+        void insertOrder(OrderBookEntry& order);
+
     /**It will not look at the orders completely but only to those which are parsed unlink other function defined above*/
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowPrice(std::vector<OrderBookEntry>& orders);
