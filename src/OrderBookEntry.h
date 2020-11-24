@@ -4,7 +4,7 @@
 
 //Class implementation and specification into header file
 
-enum class OrderBookType {bid, ask, unknown};
+enum class OrderBookType {bid, ask, unknown, sale};
 
     class OrderBookEntry
     {
@@ -24,6 +24,19 @@ enum class OrderBookType {bid, ask, unknown};
         static bool compareByTimesstamp(OrderBookEntry& e1, OrderBookEntry& e2 )
         {
             return e1.timestamp < e2.timestamp;
+        }
+
+        //Function to compare the price of orderbook entries in ascending order (Prices lwo to high).
+        static bool compareByPriceAsc(OrderBookEntry& e1, OrderBookEntry& e2 )
+        {
+            return e1.price < e2.price;
+        }
+
+        
+        //Function to compare the price of orderbook entries in decending (Prices High to low).
+        static bool compareByPriceDesc(OrderBookEntry& e1, OrderBookEntry& e2 )
+        {
+            return e1.price > e2.price;
         }
 
     //It is mendatory to declare the same variables in class which are declared as parameters in constructpr function

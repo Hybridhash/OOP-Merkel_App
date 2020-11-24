@@ -25,6 +25,11 @@ class OrderBook
          * sent time in the orderbookt
          * if there is no nect timestamp, wraps around to the start*/
         std::string getNextTime (std::string timestamp);
+
+        /**It is kept here because mostly orders are taking place at this place
+         * We will pass in the product type and timestamp as match criteria
+        */
+        std::vector<OrderBookEntry> matchAsksToBids(std::string product, std::string timestamp);
     
         /**Function to add the entry in the orderbook by generating the object and parse*/
         void insertOrder(OrderBookEntry& order);

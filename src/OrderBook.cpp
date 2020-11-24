@@ -3,6 +3,7 @@
 #include "map"
 #include <algorithm>
 
+
 /**Construct, reading a csv data file*/
 OrderBook::OrderBook(std::string fileName)
 {
@@ -123,4 +124,93 @@ void OrderBook::insertOrder(OrderBookEntry& order)
     //Since, we are comparing the orderbookentries so function will go to orderbookentries class. 
     //Parse in the name of the function nothing else.
     std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimesstamp);
+}
+
+
+std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std::string timesstamp)
+{
+    //     asks ← orderBook.asks
+           std::vector <OrderBookEntry> asks  = getOrders(  OrderBookType::ask,
+                                                            product,
+                                                            timesstamp);
+
+    //     bids ← orderBook.bids
+
+            std::vector <OrderBookEntry> bids  = getOrders( OrderBookType::ask,
+                                                            product,
+                                                            timesstamp);
+
+    // sales ← newVector
+
+            std::vector<OrderBookEntry> sales;
+
+    // SortAscending(asks)
+            std::sort(asks.begin(), asks.end(), OrderBookEntry::compareByPriceAsc);
+
+    // SortDescending(bids)
+            std::sort(bids.begin(), bids.end(), OrderBookEntry::compareByPriceDesc);
+
+    // for all ask ∈ asks do
+            for(OrderBookEntry& bid : asks)
+            {
+
+    // for every ask for iterate ove  all bid ∈ bids do
+                for (OrderBookEntry& ask : bids)
+                {
+    //     if bid.price ≥ ask.price then
+                    if (bid.price >= ask.price)
+                    {
+    //          sale ← newOrder
+    //          sale.price ← ask.price
+                        OrderBookEntry sale{ask.price,0,timesstamp,product,OrderBookType::sale};
+
+    //         if bid.amount = ask.amount then
+                       if (bid.amount = ask.amount)
+                        { 
+    //         sale.amount ← ask.amount
+                            sale.amount = ask.amount;
+    //         Append(sales,sale)
+                            sales.push_back(sale);
+    //         bid.amount ← 0
+                            bid.amount = 0;
+    //         break
+                            break;
+    //         end if
+                        }
+
+    //         if bid.amount > ask.amount then
+                        if (bid.amount > ask.amount)
+                        {
+    //         sale.amount ← ask.amount
+                            sale.amount = ask.amount;
+    //         Append(sales,sale)
+                            sales.push_back(sale);
+    //         bid.amount ← bid.amount − ask.amount
+                            bid.amount = bid.amount - ask.amount;
+    //         break(ask is completley fullfilled)
+                            break;
+    //         end if
+                        }
+    //         if bid.amount < ask.amount then
+                        if (bid.amount < ask.amount)
+                        {
+    //         sale.amount ← bid.amount
+                            sale.amount = bid.amount;
+    //         Append(sales,sale)
+                            sales.push_back(sale);
+    //         ask.amount ← ask.amount − bid.amount
+                            ask.amount = ask.amount - bid.amount;
+    //         bid.amount ← 0
+                            bid.amount = 0;
+    //         continue (Ask is not completley fullfilled, go for next bid in for loop)
+                            continue;
+    //         end if
+                        }
+    //     end if
+                    }
+    // end for
+                }
+            }
+
+            return sales;
 }
