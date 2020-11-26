@@ -136,7 +136,7 @@ std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std:
 
     //     bids ← orderBook.bids
 
-            std::vector <OrderBookEntry> bids  = getOrders( OrderBookType::ask,
+            std::vector <OrderBookEntry> bids  = getOrders( OrderBookType::bid,
                                                             product,
                                                             timesstamp);
 
@@ -151,11 +151,11 @@ std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std:
             std::sort(bids.begin(), bids.end(), OrderBookEntry::compareByPriceDesc);
 
     // for all ask ∈ asks do
-            for(OrderBookEntry& bid : asks)
+            for(OrderBookEntry& ask : asks)
             {
 
     // for every ask for iterate ove  all bid ∈ bids do
-                for (OrderBookEntry& ask : bids)
+                for (OrderBookEntry& bid : bids)
                 {
     //     if bid.price ≥ ask.price then
                     if (bid.price >= ask.price)
