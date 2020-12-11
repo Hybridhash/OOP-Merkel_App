@@ -3,6 +3,7 @@
 #include <vector>
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
+#include "Wallet.h"
 
     class MerkelMain
     {
@@ -24,12 +25,14 @@
     int getUserOption();
     void processUserOption(int userOption);
 
-    /**T give the simulation current time*/
+    /**To give the simulation current time*/
     std::string currentTime;
 
     //Making the vector accessible for all the function in private but not accessible from public main app. Object Scope Variable
-    OrderBook OrderBook{"Test.csv"};
+    OrderBook OrderBook{"20200317.csv"};
     //std::vector<OrderBookEntry> orders;
+
+    Wallet Wallet;
 };
 
 

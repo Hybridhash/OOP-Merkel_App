@@ -4,7 +4,7 @@
 
 //Class implementation and specification into header file
 
-enum class OrderBookType {bid, ask, unknown, sale};
+enum class OrderBookType {bid, ask, unknown, asksale, bidsale};
 
     class OrderBookEntry
     {
@@ -14,7 +14,9 @@ enum class OrderBookType {bid, ask, unknown, sale};
                     double _amount,
                     std::string _timestamp,
                     std::string _product,
-                    OrderBookType _orderType);
+                    OrderBookType _orderType,
+                    //Default user name is defined as dataset
+                    std::string username = "dataset");
     
         //Function to convert the string to order book type. More practically to do here as statis (don't depend any of the data below)
         
@@ -45,4 +47,5 @@ enum class OrderBookType {bid, ask, unknown, sale};
     std::string timestamp;
     std::string product;
     OrderBookType orderType;
+    std::string username;
 };

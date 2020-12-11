@@ -4,12 +4,22 @@
 #include "OrderBookEntry.h"
 #include "MerkelMain.h"
 #include "CSVReader.h"
+#include "Wallet.h"
 
 int main()
 {   
     MerkelMain app{};
     app.init();    
-   
+
+    // Wallet Wallet;
+    // Wallet.insertCurrency("BTC", 10);
+    // Wallet.insertCurrency("USDT", 300);
+    
+    // std::cout << Wallet.toString() << std::endl;
+    // Wallet.removeCurrency("USDT", 150);
+    
+    // std::cout << Wallet.toString() << std::endl;
+
    
 }
 

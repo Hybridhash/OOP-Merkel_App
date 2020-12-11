@@ -25,6 +25,8 @@ void MerkelMain::init()
 
     currentTime = OrderBook.getEarliestTime();
 
+    Wallet.insertCurrency("BTC", 10);
+
     while(true)
     {
         printMenu();
@@ -121,8 +123,22 @@ void MerkelMain::enterAsk()
             currentTime,
             tokens[0],
             OrderBookType::ask);
-        //Inserting order in the orderbook.
-        OrderBook.insertOrder(obe);
+        
+        obe.username = "simuser";
+
+        if (Wallet.canFulfillOrder(obe))
+        {   
+            std::cout << "Wallet Looks good. " << std::endl;
+            //Inserting order in the orderbook.
+            OrderBook.insertOrder(obe);
+        }
+        else
+        {
+            std::cout << "Insufficient Funds. " << std::endl;
+                
+        }
+
+        
         }catch(const std::exception& e)
         {
             std::cout << "MerkelMain::enterAsk Bad Input: " << std::endl;
@@ -135,27 +151,82 @@ void MerkelMain::enterAsk()
 
 void MerkelMain::enterBid()
 {
-    std::cout << "Make a bid - enter the amount" << std::endl;
+     std::cout << "Mark and bid - enter the amount: Product,Price, Amount, eg: ETH/BTC,200,0.5 " << std::endl;
+    std::string input;
+    
+    std::getline(std::cin, input); 
+
+    std::vector<std::string> tokens = CSVReader::tokenise(input, ',');
+    if (tokens.size() != 3)
+    {
+      std::cout <<" MerkelMain::enterBid | Bad input by user | " << input << std::endl;      
+    }
+    else
+    {   
+        try{
+        OrderBookEntry obe = CSVReader::stringToOBE(
+            tokens[1],
+            tokens[2],
+            currentTime,
+            tokens[0],
+            OrderBookType::bid);
+
+        obe.username = "simuser";
+
+        if (Wallet.canFulfillOrder(obe))
+        {   
+            std::cout << "Wallet Looks good. " << std::endl;
+            //Inserting order in the orderbook.
+            OrderBook.insertOrder(obe);
+        }
+        else
+        {
+            std::cout << "Insufficient Funds. " << std::endl;
+                
+        }
+
+        
+        }catch(const std::exception& e)
+        {
+            std::cout << "MerkelMain::enterBid |Bad Input| : " << std::endl;
+        }
+    }
+    
+
+    std::cout << "You Typed: " << input << std::endl;
+
+
 }
 
 void MerkelMain::printWallet()
 {
-    std::cout << "Your wallet is empty. " << std::endl;
+    std::cout << Wallet.toString() << std::endl;
 }
         
 void MerkelMain::gotoNextTimeframe()
 {
     std::cout << "Going to next time frame. " << std::endl;
 
-    std::vector <OrderBookEntry> sales = OrderBook.matchAsksToBids("ETH/BTC", currentTime);
-
-    std::cout << "Sales: " << sales.size() << std::endl;
-
-    for (OrderBookEntry& sale:sales)
+    for (std::string p : OrderBook.getKnownProducts()) 
+    
     {
-        std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
-    }
 
+        std::vector <OrderBookEntry> sales = OrderBook.matchAsksToBids(p, currentTime);
+
+        std::cout << "Sales: " << sales.size() << std::endl;
+
+        for (OrderBookEntry& sale:sales)
+        {
+            std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
+            if (sale.username == "simuser")
+            {
+                //Update the Wallet
+                Wallet.processSale(sale);
+
+            }
+        }
+
+    }
     currentTime = OrderBook.getNextTime(currentTime);
 }
  
