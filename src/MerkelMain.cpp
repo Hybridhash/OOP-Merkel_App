@@ -6,6 +6,8 @@
 #include "OrderBook.h"
 #include <stdexcept>
 #include <limits>
+#include "TradingBot.h"
+#include <cmath>
 
 //***Extract from Video****
 /* normally the idea that you call a constructor and then that starts the whole program
@@ -26,6 +28,7 @@ void MerkelMain::init()
     currentTime = OrderBook.getEarliestTime();
 
     Wallet.insertCurrency("BTC", 10);
+    Wallet.insertCurrency("ETH", 10);
 
     while(true)
     {
@@ -51,6 +54,9 @@ void MerkelMain::printMenu()
     std::cout << "5: Print wallet " << std::endl;
     // 6 continue   
     std::cout << "6: Continue " << std::endl;
+
+    // 7 autoTrader
+    std::cout << "7: Activate trading bot " << std::endl;
 
     std::cout << "============== " << std::endl;
 
@@ -207,27 +213,28 @@ void MerkelMain::gotoNextTimeframe()
 {
     std::cout << "Going to next time frame. " << std::endl;
 
-    for (std::string p : OrderBook.getKnownProducts()) 
+    appRefresh();
+    // for (std::string p : OrderBook.getKnownProducts()) 
     
-    {
+    // {
 
-        std::vector <OrderBookEntry> sales = OrderBook.matchAsksToBids(p, currentTime);
+    //     std::vector <OrderBookEntry> sales = OrderBook.matchAsksToBids(p, currentTime);
 
-        std::cout << "Sales: " << sales.size() << std::endl;
+    //     std::cout << "Sales: " << sales.size() << std::endl;
 
-        for (OrderBookEntry& sale:sales)
-        {
-            std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
-            if (sale.username == "simuser")
-            {
-                //Update the Wallet
-                Wallet.processSale(sale);
+    //     for (OrderBookEntry& sale:sales)
+    //     {
+    //         std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
+    //         if (sale.username == "simuser" || "trading_bot")
+    //         {
+    //             //Update the Wallet
+    //             Wallet.processSale(sale);
 
-            }
-        }
+    //         }
+    //     }
 
-    }
-    currentTime = OrderBook.getNextTime(currentTime);
+    // }
+    // currentTime = OrderBook.getNextTime(currentTime);
 }
  
 int MerkelMain::getUserOption()
@@ -276,5 +283,85 @@ void MerkelMain::processUserOption(int userOption)
     if (userOption == 6) // bad input
     {
         gotoNextTimeframe();
+    }
+    if (userOption == 7) // bad input
+    {
+        autoTrader();
     }        
 } 
+
+void MerkelMain::autoTrader()
+{
+    std::cout << "AutoTrader Activated " << std::endl;
+
+    //std::vector<OrderBookEntry>sales=tradingBot.botOrderFilter("ETH/BTC",currentTime,"ask");
+    //std::cout<<"Sales:"<<sales.size()<<std::endl;
+    //double sum = 0;
+    //double count = 0;
+    
+    //for(OrderBookEntry& sale:sales)
+    //{   
+        
+        //sum += sale.price;
+        //count += 1; 
+        //std::cout<<"Sale Price: "<<sale.price<<" amount: "<<sale.amount<<std::endl;
+
+        //std::cout <<"Time | x axis|:" <<  sale.timestamp << sale.price << std::endl;
+
+    //}
+
+    //double averagePrice = tradingBot.SMAPrice(sales);
+
+   //double unitNumbers = TradingBot.SqrLinearRegression(sales); 
+
+    //std::cout<<"Sum of Price: "<< sum <<std::endl;
+    //std::cout<<"Average Price First Method: "<< sum/count <<std::endl;
+    
+    //std::cout<<"Average Price Second Method: "<< sum/sales.size() <<std::endl;
+
+    //std::cout << "Average price calculated by bot: " << averagePrice << std::endl;
+
+    //std::cout << "Merkel Main || No of Units: " << unitNumbers << std::endl;
+
+    //Linear Regression
+    Wallet.insertCurrency("BTC", 10);
+
+    tradingBot.orderProcessing("ETH/BTC");
+    
+    appRefresh();
+
+    // for (std::string p : OrderBook.getKnownProducts())
+    // {
+    //     std::cout << "KnownProduct: " << p << std::endl; 
+    // }
+    
+    
+
+}
+
+void MerkelMain::appRefresh()
+
+{
+
+        for (std::string p : OrderBook.getKnownProducts()) 
+    
+    {
+
+        std::vector <OrderBookEntry> sales = OrderBook.matchAsksToBids(p, currentTime);
+
+        std::cout << "Sales: " << sales.size() << std::endl;
+
+        for (OrderBookEntry& sale:sales)
+        {
+            std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
+            if (sale.username == "simuser" || "trading_bot")
+            {
+                //Update the Wallet
+                Wallet.processSale(sale);
+
+            }
+        }
+
+    }
+    currentTime = OrderBook.getNextTime(currentTime);
+}

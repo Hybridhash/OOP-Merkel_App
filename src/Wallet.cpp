@@ -65,7 +65,7 @@ bool Wallet::removeCurrency(std::string type, double amount)
 
 bool Wallet::containsCurrency(std::string type, double amount)
 {
-     if (currencies.count(type) == 0)
+  if (currencies.count(type) == 0)
             return false;
     else
         return currencies[type] >= amount;
@@ -102,7 +102,7 @@ bool Wallet::canFulfillOrder(OrderBookEntry order)
          double amount = order.amount;   
          std::string currency =  currs[0];
 
-         std::cout << "Wallet::canFulfillOrder " << currency << " : " << amount << std::endl; 
+         std::cout << "Wallet::canFulfillOrder || ASK " << currency << " : " << amount << std::endl; 
 
          return containsCurrency (currency, amount);
     }
@@ -112,7 +112,7 @@ bool Wallet::canFulfillOrder(OrderBookEntry order)
         double amount = order.amount*order.price;   
         std::string currency =  currs[1];
 
-        std::cout << "Wallet::canFulfillOrder " << currency << " : " << amount << std::endl; 
+        std::cout << "Wallet::canFulfillOrder || BID " << currency << " : " << amount << std::endl; 
 
         return containsCurrency (currency, amount);
     }
@@ -150,4 +150,32 @@ void Wallet::processSale(OrderBookEntry& sale)
          currencies[outgoingCurrency] -= outgoingAmount;
     }
 
+}
+
+void Wallet::appRefresh()
+
+{
+        currentTime = OrderBook.getEarliestTime();
+
+        for (std::string p : OrderBook.getKnownProducts()) 
+    
+    {
+
+        std::vector <OrderBookEntry> sales = OrderBook.matchAsksToBids(p, currentTime);
+
+        std::cout << "Sales: " << sales.size() << std::endl;
+
+        for (OrderBookEntry& sale:sales)
+        {
+            std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
+            if (sale.username == "simuser" || "trading_bot")
+            {
+                //Update the Wallet
+                processSale(sale);
+
+            }
+        }
+
+    }
+    currentTime = OrderBook.getNextTime(currentTime);
 }

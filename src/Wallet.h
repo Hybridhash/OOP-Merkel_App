@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include "OrderBook.h"
 
 class Wallet
 
@@ -29,8 +30,14 @@ class Wallet
         /**String representation of the currency Wallet is having*/
         std::string toString();
 
+        /**Processing the sales, updating wallet and shifting to next time frame*/
+        void appRefresh();
+
     private:
 
+        std::string currentTime;
+
+        OrderBook OrderBook{"20200317.csv"};
         /**Mapping the strings to double i.e. Currency Name and Amounts*/
         std::map<std::string, double> currencies;    
 

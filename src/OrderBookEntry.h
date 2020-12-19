@@ -4,7 +4,7 @@
 
 //Class implementation and specification into header file
 
-enum class OrderBookType {bid, ask, unknown, asksale, bidsale};
+enum class OrderBookType {bid, ask, unknown, asksale, bidsale, botask, botbid};
 
     class OrderBookEntry
     {

@@ -4,6 +4,7 @@
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
 #include "Wallet.h"
+#include "TradingBot.h"
 
     class MerkelMain
     {
@@ -13,6 +14,8 @@
     MerkelMain(); 
     /**Call this to start the sim*/
     void init();
+
+    
 
     private:  
     void printMenu();
@@ -24,7 +27,9 @@
     void gotoNextTimeframe();
     int getUserOption();
     void processUserOption(int userOption);
-
+    void autoTrader();
+    void appRefresh();
+    
     /**To give the simulation current time*/
     std::string currentTime;
 
@@ -33,6 +38,8 @@
     //std::vector<OrderBookEntry> orders;
 
     Wallet Wallet;
+
+    TradingBot tradingBot;
 };
 
 

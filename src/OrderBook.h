@@ -37,7 +37,9 @@ class OrderBook
     /**It will not look at the orders completely but only to those which are parsed unlink other function defined above*/
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowPrice(std::vector<OrderBookEntry>& orders);
-    private:
+        
         std::vector<OrderBookEntry> orders;
+    private:
+        
 
 };
