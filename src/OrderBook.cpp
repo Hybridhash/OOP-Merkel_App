@@ -2,6 +2,7 @@
 #include "CSVReader.h"
 #include "map"
 #include <algorithm>
+#include <iostream>
 
 
 /**Construct, reading a csv data file*/
@@ -149,6 +150,12 @@ std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std:
 
     // SortDescending(bids)
             std::sort(bids.begin(), bids.end(), OrderBookEntry::compareByPriceDesc);
+
+    // Since the order are sorted, therefore, we can get the max and min value.
+            std::cout << "max ask " << asks[asks.size()-1].price << std::endl;
+            std::cout << "min ask " << asks[0].price << std::endl;
+            std::cout << "max bid " << bids[0].price << std::endl;
+            std::cout << "min bid " << bids[bids.size()-1].price << std::endl;
 
     // for all ask ∈ asks do
             for(OrderBookEntry& ask : asks)

@@ -151,31 +151,3 @@ void Wallet::processSale(OrderBookEntry& sale)
     }
 
 }
-
-void Wallet::appRefresh()
-
-{
-        currentTime = OrderBook.getEarliestTime();
-
-        for (std::string p : OrderBook.getKnownProducts()) 
-    
-    {
-
-        std::vector <OrderBookEntry> sales = OrderBook.matchAsksToBids(p, currentTime);
-
-        std::cout << "Sales: " << sales.size() << std::endl;
-
-        for (OrderBookEntry& sale:sales)
-        {
-            std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
-            if (sale.username == "simuser" || "trading_bot")
-            {
-                //Update the Wallet
-                processSale(sale);
-
-            }
-        }
-
-    }
-    currentTime = OrderBook.getNextTime(currentTime);
-}

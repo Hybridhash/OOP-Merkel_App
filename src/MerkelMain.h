@@ -5,6 +5,7 @@
 #include "OrderBook.h"
 #include "Wallet.h"
 #include "TradingBot.h"
+#include "TradeEngine.h"
 
     class MerkelMain
     {
@@ -21,25 +22,28 @@
     void printMenu();
     void printHelp();
     void printMarketStats();
-    void enterAsk();
-    void enterBid();
-    void printWallet();        
-    void gotoNextTimeframe();
+    //void enterAsk();
+    
+            
+    
     int getUserOption();
     void processUserOption(int userOption);
     void autoTrader();
-    void appRefresh();
-    
+    //void appRefresh();
     /**To give the simulation current time*/
-    std::string currentTime;
+    //std::string currentTime;
 
     //Making the vector accessible for all the function in private but not accessible from public main app. Object Scope Variable
     OrderBook OrderBook{"20200317.csv"};
     //std::vector<OrderBookEntry> orders;
 
-    Wallet Wallet;
+    //Wallet Wallet;
 
-    TradingBot tradingBot;
+    //TradingBot tradingBot{TradeEngine};
+
+    TradeEngine TradeEngine;
+    
 };
+
 
 

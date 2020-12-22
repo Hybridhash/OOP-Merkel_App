@@ -9,7 +9,7 @@ class OrderBook
 {
 
     public:
-    /**Construct, reading a csv data file*/
+    /**Constructor, reading a csv data file*/
         OrderBook(std::string fileName);
     /**return vector of all the known products in the dataset*/
         std::vector<std::string> getKnownProducts();

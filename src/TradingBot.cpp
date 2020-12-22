@@ -4,12 +4,15 @@
 #include "OrderBook.h"
 #include <iostream>
 #include <cmath>
+//#include "TradeEngine.h"
 //#include <stdexcept>
+
+//TradingBot::TradingBot(TradeEngine _tradeEngine): tradeEngine(_tradeEngine)
 
 TradingBot::TradingBot()
 {
 
-};
+}
 
 std::vector<OrderBookEntry> TradingBot::botOrderFilter(std::string product, std::string timesstamp,std::string type)
 {
@@ -84,74 +87,38 @@ double TradingBot::SqrLinearRegression(std::vector<OrderBookEntry> orders)
     return a+(b*11);
 }
  
-void TradingBot::orderProcessing(std::string product)
-{
+// void TradingBot::orderProcessing(std::string product)
+// {
 
-    std::vector<OrderBookEntry>askSales= botOrderFilter(product,OrderBook.getEarliestTime(),"ask");
-    std::vector<OrderBookEntry>bidSales= botOrderFilter(product,OrderBook.getEarliestTime(),"bid");
+//     std::vector<OrderBookEntry>askSales= botOrderFilter(product,OrderBook.getEarliestTime(),"ask");
+//     std::vector<OrderBookEntry>bidSales= botOrderFilter(product,OrderBook.getEarliestTime(),"bid");
 
-    double currentAsk =  SMAPrice(askSales);
-    double currentBid =  SMAPrice(bidSales);
-    double expectedPrice = SqrLinearRegression(askSales);
+//     double currentAsk =  SMAPrice(askSales);
+//     double currentBid =  SMAPrice(bidSales);
+//     double expectedPrice = SqrLinearRegression(askSales);
 
-    std::cout << "SMA ask: " << currentAsk << std::endl;
-    std::cout << "SMA bid: " << currentBid << std::endl;
+//     std::cout << "SMA ask: " << currentAsk << std::endl;
+//     std::cout << "SMA bid: " << currentBid << std::endl;
 
     
-    std::cout << "Future Expected Price : "<< expectedPrice << std::endl;
-    std::cout << "Trading Bot Time : " << OrderBook.getEarliestTime() << std::endl;
+//     std::cout << "Future Expected Price : "<< expectedPrice << std::endl;
+//     std::cout << "Trading Bot Time : " << OrderBook.getEarliestTime() << std::endl;
 
-    if (expectedPrice < currentAsk) //Expected prices are less than current ask, we are selling the curency
-    {
-        orderPlacement(currentAsk,10,OrderBook.getEarliestTime(),product,OrderBookType::bid);
-        std::cout<< "Ask Price: " << currentAsk << std::endl;
-    } 
-    else if (expectedPrice > currentAsk) //Expected prices are higher than current ask, we are buying the curency
-    {   
-        orderPlacement(currentAsk,10,OrderBook.getEarliestTime(),product,OrderBookType::ask);
-        std::cout<< "Bid Price: " << currentBid << std::endl;
-    }
-    else
-    {
-        std::cout<< "Expected price matches the ask: " << currentAsk << std::endl;
-    }
-}
+//     if (expectedPrice < currentAsk) //Expected prices are less than current ask, we are selling the curency
+//     {
+//         botOrderPlacement(currentAsk,10,OrderBook.getEarliestTime(),product,OrderBookType::bid);
+//         std::cout<< "Ask Price: " << currentAsk << std::endl;
+//     } 
+//     else if (expectedPrice > currentAsk) //Expected prices are higher than current ask, we are buying the curency
+//     {   
+//         botOrderPlacement(currentAsk,10,OrderBook.getEarliestTime(),product,OrderBookType::ask);
+//         std::cout<< "Bid Price: " << currentBid << std::endl;
+//     }
+//     else
+//     {
+//         std::cout<< "Expected price matches the ask: " << currentAsk << std::endl;
+//     }
+// }
 
 
- void TradingBot::orderPlacement(double price, 
-                                double amount,
-                                std::string timestamp,
-                                std::string product,
-                                OrderBookType orderType)
-{
-    std::string username = "trading_bot";
-
-    try{
-        OrderBookEntry obe =  OrderBookEntry(
-            price,
-            amount,
-            timestamp,
-            product,
-            orderType,
-            username);
-
-        if (Wallet.canFulfillOrder(obe))
-        {   
-            std::cout << "Trading Bot || Wallet Looks good. " << std::endl;
-            //Inserting order in the orderbook.
-            OrderBook.insertOrder(obe);
-        }
-        else
-        {
-            std::cout << "Trading Bot || Insufficient Funds. " << std::endl;
-                
-        }
-
-        
-        }catch(const std::exception& e)
-        {
-            std::cout << "TradingBot::orderPlacement |Bad Input| : " << std::endl;
-        }
-
-        
-}
+ 
