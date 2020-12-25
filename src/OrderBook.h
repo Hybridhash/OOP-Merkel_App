@@ -4,6 +4,7 @@
 #include "CSVReader.h"
 #include <string>
 #include <vector>
+#include <set>
 
 class OrderBook
 {
@@ -34,10 +35,15 @@ class OrderBook
         /**Function to add the entry in the orderbook by generating the object and parse*/
         void insertOrder(OrderBookEntry& order);
 
-    /**It will not look at the orders completely but only to those which are parsed unlink other function defined above*/
+        /**It will not look at the orders completely but only to those which are parsed unlink other function defined above*/
         static double getHighPrice(std::vector<OrderBookEntry>& orders);
         static double getLowPrice(std::vector<OrderBookEntry>& orders);
-        
+
+
+        /**Returns the all timesstamps in the merkel live data*/
+        void timeStamps();
+
+        /**Vector of order*/
         std::vector<OrderBookEntry> orders;
     private:
         

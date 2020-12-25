@@ -238,3 +238,27 @@ std::vector<OrderBookEntry> OrderBook::matchAsksToBids(std::string product, std:
 
             return sales;
 }
+
+void OrderBook::timeStamps()
+{
+    std::set<std::string> time;
+
+    char userOption = 'Y';
+    
+
+    for (OrderBookEntry& e : orders)
+        {
+            time.insert(e.timestamp);
+        }
+
+//    for (const auto& t : time)
+//    {
+       
+//        std::cout << t << std::endl;
+//        std::cout << "Enter 'Y' to next timestamp: " << std::endl;
+//        std::cin >> userOption;
+//        if (userOption == 'Y')
+//        continue;
+//    }
+
+}

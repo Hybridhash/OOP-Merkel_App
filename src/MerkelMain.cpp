@@ -247,13 +247,44 @@ void MerkelMain::autoTrader()
     //std::cout << "Merkel Main || No of Units: " << unitNumbers << std::endl;
 
     //Linear Regression
-    for (std::string p : OrderBook.getKnownProducts()) 
+    // for (std::string p : OrderBook.getKnownProducts()) 
     
-    {
-        std::cout << "Product :" << p << std::endl; 
-        TradeEngine.orderProcessing(p, 10);
+    // {
+    //     std::cout << "Product :" << p << std::endl; 
+    //     TradeEngine.orderProcessing(p, 10);
     
-    }
+    // }
+    
+    
+    std::cout <<"==============================" << std::endl;
+    std::cout <<"Welcome to Merkel Trading Bot" << std::endl;
+    std::cout <<"==============================" << std::endl;
+    
+    TradeEngine.orderProcessing("ETH/BTC",10);
+
+    //std::cout << "Currency Balance: " << check << std::endl;
+
+//     std::set<std::string> time;
+
+//     char userOption = 'Y';
+    
+//     for (OrderBookEntry& e : OrderBook.orders)
+//         {
+//             time.insert(e.timestamp);
+//         }
+
+//    for (const auto& t : time)
+//         {
+            
+//             std::cout << t << std::endl;
+//             std::cout << "Enter 'Y' to next timestamp: " << std::endl;
+//             std::cin >> userOption;
+//             if (userOption == 'Y')
+//             continue;
+//             if (userOption == 'N')
+//             break;
+//         }
+
     // for (std::string p : OrderBook.getKnownProducts())
     // {
     //     std::cout << "KnownProduct: " << p << std::endl; 

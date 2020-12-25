@@ -34,7 +34,9 @@ class TradeEngine
         void orderProcessing(std::string product, double amount); 
 
         //Function to check the possiblity of tarde before executing.
-        void tradeChecker(std::string product, double amount);
+        //void botTrading();
+
+
 
     private:
         

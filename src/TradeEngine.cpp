@@ -42,7 +42,7 @@ void TradeEngine::botOrderPlacement(double price,
                                 std::string product,
                                 OrderBookType orderType)
 {
-    std::string username = "trading_bot";
+    std::string username = "simuser";
 
     try{
         OrderBookEntry obe =  OrderBookEntry(
@@ -50,8 +50,9 @@ void TradeEngine::botOrderPlacement(double price,
             amount,
             timestamp,
             product,
-            orderType,
-            username);
+            orderType);
+
+        obe.username = "simuser";
 
         if (Wallet.canFulfillOrder(obe))
         {   
@@ -70,7 +71,9 @@ void TradeEngine::botOrderPlacement(double price,
         {
             std::cout << "TradingBot::orderPlacement |Bad Input| : " << std::endl;
         }
-           
+
+    gotoNextTimeframe();
+
 }
 
 void TradeEngine::enterAsk()
@@ -211,64 +214,103 @@ void TradeEngine::printWallet()
 
 void TradeEngine::orderProcessing(std::string product, double amount)
 {
+    double userInput = 0;
 
-    std::vector<OrderBookEntry>askSales= TradingBot.botOrderFilter(product,TradingBot.OrderBook.getEarliestTime(),"ask");
-    std::vector<OrderBookEntry>bidSales= TradingBot.botOrderFilter(product,TradingBot.OrderBook.getEarliestTime(),"bid");
+    std::vector<OrderBookEntry>askSales= TradingBot.botOrderFilter(product,currentTime,"ask");
+    std::vector<OrderBookEntry>bidSales= TradingBot.botOrderFilter(product,currentTime,"bid");
 
     double currentAsk =  TradingBot.SMAPrice(askSales);
     double currentBid =  TradingBot.SMAPrice(bidSales);
-    double averagePrice = (currentAsk+currentBid)/2;
+    double averagePrice = TradingBot::meanValue(currentAsk,currentBid);
     double expectedPrice = TradingBot.SqrLinearRegression(askSales);
 
-    std::cout << "SMA ask: " << currentAsk << std::endl;
-    std::cout << "SMA bid: " << currentBid << std::endl;
-
     
-    std::cout << "Future Expected Price : "<< expectedPrice << std::endl;
-    std::cout << "Trading Bot Time : " << TradingBot.OrderBook.getEarliestTime() << std::endl;
+    std::cout << "Trading Bot Time : " << currentTime << std::endl;
 
     if (expectedPrice < averagePrice) //Expected prices are less than current ask, we are selling the curency
     {
-        botOrderPlacement(averagePrice,amount,TradingBot.OrderBook.getEarliestTime(),product,OrderBookType::bid);
-        std::cout<< "Ask Price: " << currentBid << std::endl;
+        std::cout << "Bot Ask || Future Expected Price : "<< expectedPrice << " is Less than : " << averagePrice << std::endl;
+
+        //std::vector <OrderBookEntry> expectedSales = TradingBot.OrderBook.matchAsksToBids(product, currentTime);
+
+        //std::cout << "Expected Sales " << expectedSales.size() << std::endl;
+
+        std::cin >> userInput; 
+
+        if (userInput == 1)        
+        {
+            std::cout<< "Ask Price: " << currentBid << std::endl;
+            botOrderPlacement(currentBid,amount,currentTime,product,OrderBookType::ask);
+            
+        }
     } 
     else if (expectedPrice > averagePrice) //Expected prices are higher than current ask, we are buying the curency
     {   
-        botOrderPlacement((averagePrice * double(1.05)),amount,TradingBot.OrderBook.getEarliestTime(),product,OrderBookType::ask);
-        std::cout<< "Bid Price: " << currentAsk << std::endl;
+        std::cout << "Bot Bid || Future Expected Price : "<< expectedPrice << " is higher than : " << averagePrice << std::endl;
+
+        std::vector <OrderBookEntry> expectedSales = TradingBot.OrderBook.matchAsksToBids(product, currentTime);
+
+        std::cout << "Expected Sales " << expectedSales.size() << std::endl;
+
+        std::cin >> userInput;
+
+        std::cout<< "Bid Price: " << currentAsk * double(1.05) << std::endl;
+        botOrderPlacement((currentAsk * double(1.05)),amount,currentTime,product,OrderBookType::bid);
+        
     }
     else
     {
         std::cout<< "Expected price matches the ask: " << currentAsk << std::endl;
     }
 
-    gotoNextTimeframe();
-
 }
 
+// void TradeEngine::botTrading()
+// {
 
-void TradeEngine::tradeChecker(std::string product, double amount)
-{
-
-
-    for (std::string p : TradingBot.OrderBook.getKnownProducts()) 
+//    for (std::string p : TradingBot.OrderBook.getKnownProducts())
+//     {
     
-    {
-        std::cout << "matching " << p << std::endl;
-        std::vector <OrderBookEntry> sales = TradingBot.OrderBook.matchAsksToBids(p, currentTime);
-        std::cout << "Sales: " << sales.size() << std::endl;
+//         std::cout << "KnownProduct: " << p << std::endl;
+//         //std::cout << "Currency Amount: " << Wallet.checkWallet(p) * .80 << std::endl;
+//         if  (Wallet.checkWallet(p) > 0)
+//         {
+//             std::cout << "Order Is Initiated" << std::endl; 
+//             orderProcessing(p,Wallet.checkWallet(p));
 
-        for (OrderBookEntry& sale:sales)
-        {
-            std::cout << "Sale Price: " <<sale.price << " amount: " << sale.amount << std::endl;
-            if (sale.username == "simuser" || "trading_bot")
-            {
-                //Update the Wallet
-                //Wallet.processSale(sale);
+//         }
+//    }
+   
+//     double averagePrice = currentBid+ 
 
-            }
-        }
+//     std::cout <<"==============================" << std::endl;
+//     std::cout <<"Welcome to Merkel Trading Bot" << std::endl;
+//     std::cout <<"==============================" << std::endl;
+    
+    
+    
+//     std::set<std::string> time;
 
-    }
+//     char userOption = 'Y';
+    
+//     for (OrderBookEntry& e : OrderBook.orders)
+//         {
+//             time.insert(e.timestamp);
+//         }
 
-}
+//    for (const auto& t : time)
+//         {
+            
+//             std::cout << t << std::endl;
+//             std::cout << "Enter 'Y' to next timestamp: " << std::endl;
+//             std::cin >> userOption;
+//             if (userOption == 'Y')
+//             continue;
+//             if (userOption == 'N')
+//             break;
+//         }
+
+//}
+
+
+

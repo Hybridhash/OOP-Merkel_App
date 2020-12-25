@@ -4,6 +4,7 @@
 #include <map>
 #include <iostream>
 #include "OrderBook.h"
+#include <tuple>
 
 class Wallet
 
@@ -29,6 +30,9 @@ class Wallet
 
         /**String representation of the currency Wallet is having*/
         std::string toString();
+
+        /**Method to check the balance for teh product*/
+        double checkWallet(std::string product);
 
 
     private:

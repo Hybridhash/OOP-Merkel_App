@@ -2,6 +2,8 @@
 #include <iostream>
 #include "CSVReader.h"
 
+
+
  Wallet::Wallet()
  {
 
@@ -150,4 +152,24 @@ void Wallet::processSale(OrderBookEntry& sale)
          currencies[outgoingCurrency] -= outgoingAmount;
     }
 
+}
+
+double Wallet::checkWallet(std::string product)
+{
+
+    for (std::pair<std::string, double> pair : currencies)
+    {
+        std::vector<std::string> currs = CSVReader::tokenise(product, '/');
+        //to pull the first items from the pair(Local string).
+        std::string currency = pair.first;
+        //to pull the second ites from the pair.
+        double amount = pair.second;
+
+        if (currs[0] == currency)
+        {
+            return amount;
+        }
+    }
+    
+    return 0;
 }

@@ -120,5 +120,12 @@ double TradingBot::SqrLinearRegression(std::vector<OrderBookEntry> orders)
 //     }
 // }
 
+double TradingBot::meanValue(double first, double second)
+{
+    double averageValue = (first+second)/2;
+
+    return averageValue;
+}
+
 
  

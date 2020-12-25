@@ -21,6 +21,8 @@ class TradingBot
         //Square Linear Regression
         double SqrLinearRegression(std::vector<OrderBookEntry> orders);
 
+        //Static functiont to calculate the mean of two inputs values
+        static double meanValue(double first, double second);
         //Function to automate the orders by bot using the price calculated in SMA/Linear Regression
         //void orderProcessing(std::string product); 
 
