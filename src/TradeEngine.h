@@ -5,6 +5,7 @@
 #include "OrderBookEntry.h"
 #include "Wallet.h"
 #include "TradingBot.h"
+#include "TradeCosting.h"
 
 class TradeEngine
 
@@ -20,12 +21,13 @@ class TradeEngine
                             std::string product,
                             OrderBookType orderType);
 
-        //void appRefresh();
+        void appRefresh();
         void enterBid();
         void enterAsk();
         void gotoNextTimeframe();
         void printWallet();
         void autoTrader();
+        void printBotCost();
         
         std::string currentTime;
         //OrderBook OrderBook{"Test.csv"};
@@ -34,12 +36,13 @@ class TradeEngine
         void orderProcessing(std::string product, double amount); 
 
         //Function to check the possiblity of tarde before executing.
-        //void botTrading();
+        void botTrading();
 
 
 
     private:
-        
-        TradingBot TradingBot;        
+
+        tradeCosting tradeCosting;    
+        TradingBot TradingBot;      
         Wallet Wallet;
 };

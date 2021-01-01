@@ -6,6 +6,7 @@
 #include "Wallet.h"
 #include "TradingBot.h"
 #include "TradeEngine.h"
+#include "TradeCosting.h"
 
     class MerkelMain
     {
@@ -38,9 +39,8 @@
     //std::vector<OrderBookEntry> orders;
 
     //Wallet Wallet;
-
+    //tradeCosting tradeCosting;
     //TradingBot tradingBot{TradeEngine};
-
     TradeEngine TradeEngine;
     
 };

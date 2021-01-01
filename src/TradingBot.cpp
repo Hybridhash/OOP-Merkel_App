@@ -76,7 +76,7 @@ double TradingBot::SqrLinearRegression(std::vector<OrderBookEntry> orders)
     }
 
     //Y = a + bx || trend line 
-    //Calculating b (Slop) 
+    //Calculating b (Slop)
     double b = double ((n * sumXY) - (sumX*sumY))/ 
                         ((n*xSqr) - pow(sumX, 2));
 

@@ -46,5 +46,6 @@
         "xtree": "cpp",
         "algorithm": "cpp",
         "set": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

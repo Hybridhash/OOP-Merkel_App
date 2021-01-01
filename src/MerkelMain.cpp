@@ -55,8 +55,11 @@ void MerkelMain::printMenu()
     // 6 continue   
     std::cout << "6: Continue " << std::endl;
 
+    // 7 bot Cost
+    std::cout << "7: Bot Simulation Cost  " << std::endl;
+
     // 7 autoTrader
-    std::cout << "7: Activate trading bot " << std::endl;
+    std::cout << "8: Activate trading bot " << std::endl;
 
     std::cout << "============== " << std::endl;
 
@@ -209,6 +212,10 @@ void MerkelMain::processUserOption(int userOption)
     }
     if (userOption == 7) // bad input
     {
+        TradeEngine.printBotCost();
+    }
+    if (userOption == 8)
+    {
         autoTrader();
     }        
 } 
@@ -260,7 +267,15 @@ void MerkelMain::autoTrader()
     std::cout <<"Welcome to Merkel Trading Bot" << std::endl;
     std::cout <<"==============================" << std::endl;
     
-    TradeEngine.orderProcessing("ETH/BTC",10);
+    //--------//
+    TradeEngine.botTrading();
+    //-------//
+
+    //tradeCosting.tradeCalculator(100);
+    //tradeCosting.tradeCalculator(50);
+    //tradeCosting.tradeCalculator(1000);
+
+    //tradeCosting.todisplayCharges();
 
     //std::cout << "Currency Balance: " << check << std::endl;
 
